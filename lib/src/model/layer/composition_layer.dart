@@ -21,8 +21,12 @@ class CompositionLayer extends BaseLayer {
   bool? _hasMatte;
   bool? _hasMasks;
 
-  CompositionLayer(LottieDrawable lottieDrawable, Layer layerModel,
-      List<Layer> layerModels, LottieComposition composition)
+  CompositionLayer(
+      LottieDrawable lottieDrawable,
+      Layer layerModel,
+      List<Layer> layerModels,
+      LottieComposition composition,
+      TextDirection textDirection)
       : super(lottieDrawable, layerModel) {
     var timeRemapping = layerModel.timeRemapping;
     if (timeRemapping != null) {
@@ -36,7 +40,8 @@ class CompositionLayer extends BaseLayer {
     BaseLayer? mattedLayer;
     for (var i = layerModels.length - 1; i >= 0; i--) {
       var lm = layerModels[i];
-      var layer = BaseLayer.forModel(this, lm, lottieDrawable, composition);
+      var layer = BaseLayer.forModel(
+          this, lm, lottieDrawable, composition, textDirection);
       if (layer == null) {
         continue;
       }

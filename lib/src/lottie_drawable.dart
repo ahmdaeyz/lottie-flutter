@@ -20,16 +20,21 @@ class LottieDrawable {
   bool _isDirty = true;
   bool enableMergePaths = false;
   FilterQuality? filterQuality;
+  final TextDirection textDirection;
 
   /// Gives a suggestion whether to paint with anti-aliasing, or not. Default is true.
   bool antiAliasingSuggested = true;
 
-  LottieDrawable(this.composition, {LottieDelegates? delegates, this.frameRate})
-      : size = Size(composition.bounds.width.toDouble(),
+  LottieDrawable(
+    this.composition, {
+    LottieDelegates? delegates,
+    this.frameRate,
+    this.textDirection = TextDirection.ltr,
+  }) : size = Size(composition.bounds.width.toDouble(),
             composition.bounds.height.toDouble()) {
     this.delegates = delegates;
-    _compositionLayer = CompositionLayer(
-        this, LayerParser.parse(composition), composition.layers, composition);
+    _compositionLayer = CompositionLayer(this, LayerParser.parse(composition),
+        composition.layers, composition, textDirection);
   }
 
   CompositionLayer get compositionLayer => _compositionLayer;

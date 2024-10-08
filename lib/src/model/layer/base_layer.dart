@@ -32,13 +32,15 @@ abstract class BaseLayer implements DrawingContent, KeyPathElement {
       CompositionLayer compositionLayer,
       Layer layerModel,
       LottieDrawable drawable,
-      LottieComposition composition) {
+      LottieComposition composition,
+      TextDirection textDirection, 
+      ) {
     switch (layerModel.layerType) {
       case LayerType.shape:
         return ShapeLayer(drawable, layerModel, compositionLayer);
       case LayerType.preComp:
         return CompositionLayer(drawable, layerModel,
-            composition.getPrecomps(layerModel.refId)!, composition);
+            composition.getPrecomps(layerModel.refId)!, composition, textDirection);
       case LayerType.solid:
         return SolidLayer(drawable, layerModel);
       case LayerType.image:
@@ -46,7 +48,7 @@ abstract class BaseLayer implements DrawingContent, KeyPathElement {
       case LayerType.nullLayer:
         return NullLayer(drawable, layerModel);
       case LayerType.text:
-        return TextLayer(drawable, layerModel);
+        return TextLayer(drawable, layerModel, textDirection);
       case LayerType.unknown:
         // Do nothing
         drawable.composition

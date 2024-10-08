@@ -16,8 +16,7 @@ import 'base_layer.dart';
 import 'layer.dart';
 
 class TextLayer extends BaseLayer {
-  // TODO(xha): take from context.
-  final TextDirection _textDirection = TextDirection.ltr;
+  TextDirection _textDirection = TextDirection.ltr;
   final _matrix = Matrix4.identity();
   final _fillPaint = Paint()..style = PaintingStyle.fill;
   final _strokePaint = Paint()..style = PaintingStyle.stroke;
@@ -48,9 +47,10 @@ class TextLayer extends BaseLayer {
 
   BaseKeyframeAnimation<double, double>? _textSizeCallbackAnimation;
 
-  TextLayer(LottieDrawable lottieDrawable, Layer layerModel)
+  TextLayer(LottieDrawable lottieDrawable, Layer layerModel, TextDirection textDirection)
       : _composition = layerModel.composition,
         _textAnimation = layerModel.text!.createAnimation(),
+        _textDirection = textDirection, 
         super(lottieDrawable, layerModel) {
     _textAnimation.addUpdateListener(invalidateSelf);
     addAnimation(_textAnimation);
@@ -288,8 +288,20 @@ class TextLayer extends BaseLayer {
 
   void _drawFontTextLine(Characters text, TextStyle textStyle,
       DocumentData documentData, Canvas canvas, double tracking) {
-    for (var char in text) {
-      var charString = char;
+    if (tracking != 0) {
+      for (var char in text) {
+        var charString = char;
+        _drawCharacterFromFont(charString, textStyle, documentData, canvas);
+        var textPainter = TextPainter(
+            text: TextSpan(text: charString, style: textStyle),
+            textDirection: _textDirection);
+        textPainter.layout();
+        var charWidth = textPainter.width;
+        var tx = charWidth + tracking;
+        canvas.translate(tx, 0);
+      }
+    } else {
+      var charString = text.string;
       _drawCharacterFromFont(charString, textStyle, documentData, canvas);
       var textPainter = TextPainter(
           text: TextSpan(text: charString, style: textStyle),

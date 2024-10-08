@@ -101,6 +101,7 @@ class RawLottie extends LeafRenderObjectWidget {
       filterQuality: filterQuality,
       renderCache: renderCache,
       devicePixelRatio: MediaQuery.devicePixelRatioOf(context),
+      textDirection: options?.textDirection ?? TextDirection.ltr, 
     );
   }
 
@@ -114,6 +115,7 @@ class RawLottie extends LeafRenderObjectWidget {
         delegates: delegates,
         enableMergePaths: options?.enableMergePaths,
         enableApplyingOpacityToLayers: options?.enableApplyingOpacityToLayers,
+        textDirection: options?.textDirection ?? TextDirection.ltr, 
         filterQuality: filterQuality,
       )
       ..width = width

@@ -24,13 +24,15 @@ class RenderLottie extends RenderBox {
     FilterQuality? filterQuality,
     RenderCache? renderCache,
     required double devicePixelRatio,
+    TextDirection textDirection = TextDirection.ltr,
   })  : assert(progress >= 0.0 && progress <= 1.0),
         assert(
             renderCache == null || frameRate != FrameRate.max,
             'FrameRate.max cannot be used with a RenderCache '
             'Use a specific frame rate. e.g. FrameRate(60)'),
         _drawable = composition != null
-            ? (LottieDrawable(composition, frameRate: frameRate)
+            ? (LottieDrawable(composition,
+                frameRate: frameRate, textDirection: textDirection)
               ..setProgress(progress)
               ..delegates = delegates
               ..enableMergePaths = enableMergePaths ?? false
@@ -38,6 +40,7 @@ class RenderLottie extends RenderBox {
                   enableApplyingOpacityToLayers ?? false
               ..filterQuality = filterQuality)
             : null,
+        _textDirection = textDirection,
         _width = width,
         _height = height,
         _fit = fit,
@@ -55,7 +58,9 @@ class RenderLottie extends RenderBox {
       required LottieDelegates? delegates,
       bool? enableMergePaths,
       bool? enableApplyingOpacityToLayers,
-      FilterQuality? filterQuality}) {
+      FilterQuality? filterQuality, 
+      TextDirection textDirection = TextDirection.ltr, 
+      }) {
     var drawable = _drawable;
     enableMergePaths ??= false;
     enableApplyingOpacityToLayers ??= false;
@@ -72,8 +77,8 @@ class RenderLottie extends RenderBox {
       if (drawable == null ||
           drawable.composition != composition ||
           drawable.frameRate != frameRate) {
-        drawable =
-            _drawable = LottieDrawable(composition, frameRate: frameRate);
+        drawable = _drawable = LottieDrawable(composition,
+            frameRate: frameRate, textDirection: textDirection);
         needsLayout = true;
         needsPaint = true;
       }
@@ -107,6 +112,8 @@ class RenderLottie extends RenderBox {
       markNeedsLayout();
     }
   }
+
+  TextDirection _textDirection = TextDirection.ltr;
 
   /// If non-null, requires the composition to have this width.
   ///

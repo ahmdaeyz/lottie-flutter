@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 class LottieOptions {
   /// Enable merge path support.
   ///
@@ -14,8 +16,10 @@ class LottieOptions {
   /// Details: https://github.com/airbnb/lottie-android/issues/902
   final bool enableApplyingOpacityToLayers;
 
+  final TextDirection textDirection;
   LottieOptions({
     this.enableMergePaths = false,
     this.enableApplyingOpacityToLayers = false,
+    this.textDirection = TextDirection.ltr, 
   });
 }
