@@ -81,8 +81,9 @@ class LottieComposition {
 
       for (var image in composition.images.values) {
         var imagePath = p.posix.join(image.dirName, image.fileName);
+        final noPrefixSlash = imagePath.contains('/') && imagePath[0] == '/' ? imagePath.replaceFirst('/', ''): imagePath; 
         var found = archive.files.firstWhereOrNull(
-            (f) => f.name.toLowerCase() == imagePath.toLowerCase());
+            (f) => f.name.toLowerCase() == noPrefixSlash.toLowerCase());
 
         ImageProvider? provider;
         if (imageProviderFactory != null) {
